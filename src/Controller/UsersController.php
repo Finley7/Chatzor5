@@ -65,6 +65,7 @@ class UsersController extends AppController
         $newUser = $this->Users->newEntity([
             'associated' => [
                 'Roles',
+                'Activity'
             ]
         ]);
         
@@ -72,15 +73,18 @@ class UsersController extends AppController
             $this->request->data['roles']['_ids'] = [1];
             $this->request->data['username'] = h($this->request->data['username']);
             $this->request->data['primary_role'] = 1;
+            $this->request->data['activity']['action'] = 'new_user';
 
             $newUser = $this->Users->patchEntity($newUser, $this->request->data, [
                 'associated' => [
                     'Roles',
+                    'Activities'
                 ]
             ]);
             if ($this->Users->save($newUser, [
                 'associated' => [
                     'Roles',
+                    'Activities'
                 ]
             ])
             ) {

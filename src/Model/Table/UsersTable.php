@@ -49,6 +49,11 @@ class UsersTable extends Table
             'bindingKey' => 'primary_role',
             'propertyName' => 'primary_role'
         ]);
+
+        $this->hasOne('Activities', [
+            'foreignKey' => 'user_id',
+            'joinType' => 'INNER',
+        ]);
     }
 
     /**

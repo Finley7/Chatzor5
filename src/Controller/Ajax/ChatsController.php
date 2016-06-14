@@ -10,8 +10,10 @@ namespace App\Controller\Ajax;
 
 
 use App\Controller\AppController;
+use Cake\I18n\Time;
 use Cake\Network\Exception\MethodNotAllowedException;
 use Cake\Network\Exception\NotFoundException;
+use Cake\ORM\TableRegistry;
 
 class ChatsController extends AppController
 {
@@ -23,7 +25,11 @@ class ChatsController extends AppController
 
     public function index() {
         if($this->request->isAjax()) {
-            $chats = $this->Chats->find('all')->contain(['Users' => ['PrimaryRole']])->limit(25);
+            $chats = $this->Chats->find('all', [
+                'contain' => [
+                    'Users' => ['PrimaryRole']
+                ],
+            ])->limit(10)->order(['Chats.created' => 'DESC']);
 
             $this->set(compact('chats'));
             $this->set('_serialize', ['chats']);
@@ -34,17 +40,85 @@ class ChatsController extends AppController
         }
     }
 
-    public function lastchat($id) {
+    public function shout() {
         if($this->request->isAjax()) {
-            $chat = $this->Chats->get($id);
+            if($this->request->is('post')) {
+                $lastChat = $this->Chats->findByUserId($this->Auth->user('id'))->select('created')->last();
 
-            if(is_null($chat)) {
-                throw new NotFoundException("Last chat not found!");
+                if(!is_null($lastChat) && $lastChat->created->toUnixString() + 5 > Time::now()->toUnixString()) {
+                    $response = ['status' => 'error', 'message' => __('Wait 5 seconds')];
+                }
+                else
+                {
+                    $chat = $this->Chats->newEntity();
+
+                    $chat->user_id = $this->Auth->user('id');
+                    $chat->message = h($this->request->data['message']);
+
+                    if(strlen($this->request->data['message']) < 1) {
+                        $response = ['status' => 'error', 'message' => __('Empty shout')];
+                    }
+                    else
+                    {
+                        if($this->Chats->save($chat)) {
+                            $activityRegistry = TableRegistry::get('Activities');
+                            $activity = $activityRegistry->findByUserId($this->Auth->user('id'))->first();
+
+                            $activity->action = 'new_shout';
+
+                            if($activityRegistry->touch($activity, 'Activities.updated') && $activityRegistry->save($activity)) {
+                                $response = ['status' => 'ok', 'id' => $chat->id];
+                            }
+                            else
+                            {
+                                $response = ['status' => 'error', 'error' => __('Message could not be updated')];
+                            }
+                        }
+                        else
+                        {
+                            $response = ['status' => 'error', 'message' => __('Could not save')];
+                        }
+                    }
+                }
+            }
+            else
+            {
+                $response = ['status' => 'error', 'message' => __('No post request')];
             }
 
-            $this->set(compact('chats'));
-            $this->set('_serialize', ['chats']);
+            $this->set(compact('response'));
+            $this->set('_serialize', ['response']);
+        }
+        else
+        {
+            throw new MethodNotAllowedException("AJAX request only!");
+        }
+    }
 
+    public function lastid() {
+        if($this->request->isAjax()) {
+            $chat = $this->Chats->find('all')->select('id')->last();
+
+            $this->set(compact('chat'));
+            $this->set('_serialize', ['chat']);
+        }
+        else
+        {
+            throw new MethodNotAllowedException("AJAX request only");
+        }
+    }
+
+    public function view($id) {
+        if($this->request->isAjax()) {
+
+            $chat = $this->Chats->get($id, ['contain' => ['Users' => ['PrimaryRole']]]);
+
+            if(is_null($chat)) {
+                throw new NotFoundException("Shout not found!");
+            }
+
+            $this->set(compact('chat'));
+            $this->set('_serialize', ['chat']);
         }
         else
         {

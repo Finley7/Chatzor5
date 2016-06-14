@@ -22,6 +22,7 @@
 
     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 
+    <?= $this->Html->script('jquery.timeago'); ?>
     <?= $this->Html->script('bootstrap.min'); ?>
 
 </head>

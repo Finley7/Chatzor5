@@ -48,7 +48,11 @@ class PagesController extends AppController
         $this->set('title', __("Welcome to Chatzor!"));
     }
 
-    public function index() {
+    public function index() 
+    {
+        $this->loadModel('Activities');
+        $activities = $this->Activities->find('all', ['contain' => ['Users' => ['PrimaryRole']]])->order(['date' => 'DESC'])->limit(10);
 
+        $this->set(compact('activities'));
     }
 }

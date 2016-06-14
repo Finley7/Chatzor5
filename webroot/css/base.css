@@ -17,3 +17,16 @@ body, html {
     color:#fff;
     text-shadow:0px 1px 5px rgba(0,0,0,0.5);
 }
+.role {
+    font-size:15px;
+}
+.chats {
+    height:300px;
+    overflow-y:scroll;
+}
+.Gebruiker, .Administrator, .Mod {
+    font-weight:700;
+}
+.Administrator {
+    color: #bd0000;
+}
