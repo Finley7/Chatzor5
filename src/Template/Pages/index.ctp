@@ -19,9 +19,7 @@
                     </div>
                     <?= $this->Form->end(); ?>
                 </div>
-                <ul class="list-group chats">
-
-                </ul>
+                <ul class="list-group chats"></ul>
                 <div class="panel-footer">
 
                 </div>
@@ -60,7 +58,7 @@
 
                     var code = '<li data-id="' + chat.id +'" class="list-group-item">\n';
                      code += '<span class="text-muted pull-right">' + created.toLocaleString() + '</span>\n';
-                     code += '<span class="role ' + chat.user.primary_role.name + '">' + chat.user.username + '</span> ' + chat.message + '\n';
+                     code += '<span class="role ' + chat.user.primary_role.name + '">' + chat.user.username + '</span> &raquo; ' + chat.message + '\n';
                      code += '</li>';
 
                      $('.chats').append(code);
@@ -127,10 +125,11 @@
 
             var code = '<li data-id="' + result.chat.id +'" class="list-group-item">\n';
             code += '<span class="text-muted pull-right">' + created.toLocaleString() + '</span>\n';
-            code += '<span class="role ' + result.chat.user.primary_role.name + '">' + result.chat.user.username + '</span> ' + result.chat.message + '\n';
+            code += '<span class="role ' + result.chat.user.primary_role.name + '">' + result.chat.user.username + '</span> &raquo; ' + result.chat.message + '\n';
             code += '</li>';
 
             $('.chats').prepend(code);
+
         })
     }
 </script>

@@ -41,6 +41,7 @@ class ChatsController extends AppController
     }
 
     public function shout() {
+        $this->loadComponent('Ubb');
         if($this->request->isAjax()) {
             if($this->request->is('post')) {
                 $lastChat = $this->Chats->findByUserId($this->Auth->user('id'))->select('created')->last();
@@ -53,7 +54,7 @@ class ChatsController extends AppController
                     $chat = $this->Chats->newEntity();
 
                     $chat->user_id = $this->Auth->user('id');
-                    $chat->message = h($this->request->data['message']);
+                    $chat->message = $this->Ubb->parse(h($this->request->data['message']));
 
                     if(strlen($this->request->data['message']) < 1) {
                         $response = ['status' => 'error', 'message' => __('Empty shout')];

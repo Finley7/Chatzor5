@@ -1,28 +1,25 @@
 <?php
-/**
- * Dublin(tm) : Bulletin board software (https://github.com/PropertyX)
- * Copyright (c) PropertyX Software Foundation, Inc. (https://github.com/Property)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright Copyright (c) PropertyX Software Foundation, Inc. (https://github.com/PropertyX)
- * @link      https://github.com/PropertyX
- * @since     1.0
- * @license   http://www.opensource.org/licenses/mit-license.php MIT License
- */
+namespace App\Controller\Component;
 
-namespace App\View\Helper;
-
-use Cake\View\Helper;
+use Cake\Controller\Component;
+use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
 use Emojione\Client;
 use Emojione\Emojione;
 use Emojione\Ruleset;
 
-class UbbHelper extends Helper
+/**
+ * Ubb component
+ */
+class UbbComponent extends Component
 {
+
+    /**
+     * Default configuration.
+     *
+     * @var array
+     */
+    protected $_defaultConfig = [];
 
     private static $smileyIcon;
 
