@@ -1,0 +1,19 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,100italic,100,400italic,700,700italic);
+body, html {
+    background: url(../img/geometry2.png);
+    border-radius:.3rem;
+    font-family: 'Helvetica Neue', 'Open Sans', sans-serif;
+}
+.menu-header {
+    background: #3da1f0;
+    border:1px solid #3da1f0;
+    border-radius:0;
+}
+.navbar-default .navbar-nav > li > a {
+    color:#fff;
+}
+.navbar-default .navbar-nav > li > a:hover {
+    background: #307fbf;
+    color:#fff;
+    text-shadow:0px 1px 5px rgba(0,0,0,0.5);
+}
