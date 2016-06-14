@@ -37,6 +37,10 @@ class UsersTable extends Table
             ]]
         );
 
+        $this->hasMany('Mailkeys', [
+            'foreignKey' => 'user_id',
+        ]);
+
         $this->belongsToMany('Roles', [
             'foreignKey' => 'user_id',
             'targetForeignKey' => 'role_id',

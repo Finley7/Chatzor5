@@ -33,3 +33,7 @@ body, html {
 .emojione {
     height:16px;
 }
+.error-message {
+    color:#bd0000;
+    font-weight:700;
+}

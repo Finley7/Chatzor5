@@ -74,8 +74,7 @@ class AppController extends Controller
             $this->set(compact('user'));
 
             if ($this->Auth->user('primary_role') == 3) {
-                $this->Flash->error(__('Je bent verbannen!'));
-                throw new ForbiddenException('Je bent verbannen');
+                throw new ForbiddenException('Je moet je account nog activeren!');
             }
         }
     }

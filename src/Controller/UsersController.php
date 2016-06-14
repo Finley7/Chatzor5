@@ -3,7 +3,9 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\Mailer\Email;
 use Cake\Network\Exception\NotFoundException;
+use Cake\ORM\TableRegistry;
 
 /**
  * Users Controller
@@ -65,30 +67,52 @@ class UsersController extends AppController
         $newUser = $this->Users->newEntity([
             'associated' => [
                 'Roles',
-                'Activity'
+                'Activity',
+                'Mailkeys'
             ]
         ]);
         
         if ($this->request->is('post')) {
-            $this->request->data['roles']['_ids'] = [1];
+            $this->request->data['roles']['_ids'] = [1,3];
             $this->request->data['username'] = h($this->request->data['username']);
-            $this->request->data['primary_role'] = 1;
+            $this->request->data['primary_role'] = 3;
             $this->request->data['activity']['action'] = 'new_user';
+
+            $this->request->data['mailkeys'][1] = [
+                'token' => bin2hex(openssl_random_pseudo_bytes(64)),
+                'type' => 'activation',
+                'activated' => 0
+            ];
 
             $newUser = $this->Users->patchEntity($newUser, $this->request->data, [
                 'associated' => [
                     'Roles',
-                    'Activities'
+                    'Activities',
+                    'Mailkeys'
                 ]
             ]);
+
+
             if ($this->Users->save($newUser, [
                 'associated' => [
                     'Roles',
-                    'Activities'
+                    'Activities',
+                    'Mailkeys'
                 ]
             ])
             ) {
-                $this->Flash->success(__('Your account has been created! You can login now!'));
+                $this->Flash->success(__('Your account has been created! Check your e-mail!'));
+
+                $mail = new Email();
+                $mail
+                    ->from(['no-reply@finleyhd.nl' => 'Chatzor'])
+                    ->to(h($this->request->data['email']))
+                    ->subject(__('Activiate your account!'))
+                    ->emailFormat('html')
+                    ->template('activate')
+                    ->viewVars(['token' => $this->request->data['mailkeys'][1]['token']])
+                    ->send();
+
                 return $this->redirect([
                     'controller' => 'users',
                     'action' => 'login',

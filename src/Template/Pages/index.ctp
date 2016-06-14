@@ -62,9 +62,9 @@
                      code += '</li>';
 
                      $('.chats').append(code);
-                })
-            })
-        })
+                });
+            });
+        });
     }
 
     $(function() {
@@ -95,9 +95,9 @@
                     else {
                         alert(result.response.message);
                     }
-                })
+                });
             }
-        })
+        });
 
     });
 
@@ -130,6 +130,6 @@
 
             $('.chats').prepend(code);
 
-        })
+        });
     }
 </script>
