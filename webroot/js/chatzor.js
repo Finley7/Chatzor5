@@ -1,19 +1,20 @@
+
 function load_chats() {
     var chats = $.getJSON('/ajax/chats/index');
 
     chats.success(function(results) {
 
         $.each(results, function(key, value) {
-            $.each(value, function(key, chat) {
+            $.each(value, function(key, chats) {
+                $.each(chats, function(key, chat){
 
-                var created = new Date(chat.created);
+                    var code = '<li data-name="'+ chat.user.username +'" data-id="' + chat.message.id +'" class="msg list-group-item">\n';
+                    code += '<p class="message"><span class="text-muted pull-right">' + chat.message.created + '</span>\n';
+                    code += '<span class="user role ' + chat.user.primary_role + '">' + chat.user.username + '</span> &raquo; ' + chat.message.content + '</p>\n';
+                    code += '</li>';
 
-                var code = '<li data-id="' + chat.id +'" class="list-group-item">\n';
-                code += '<span class="text-muted pull-right">' + created.toLocaleString() + '</span>\n';
-                code += '<span class="role ' + chat.user.primary_role.name + '">' + chat.user.username + '</span> &raquo; ' + chat.message + '\n';
-                code += '</li>';
-
-                $('.chats').append(code);
+                    $('.chats').append(code);
+                });
             });
         });
     });
@@ -42,7 +43,7 @@ $(function() {
 
             request.success(function(result) {
                 if(result.response.status == 'ok') {
-                    load_chat(result.response.id);
+                    lastshout();
                 }
                 else {
                     alert(result.response.message);
@@ -51,21 +52,30 @@ $(function() {
         }
     });
 
+    $(".chats").on("click","span.user",function(){
+        var e=$(this).parents(".msg").data("name");$("#message").focus().val("/pvt "+e+" ")
+    })
+
 });
 
 function lastshout() {
-    var id = $.getJSON('/ajax/chats/lastid');
+    var id = $.getJSON('/ajax/chats/index', {after: $('.chats').find('>:first-child').data('id')});
     id.success(function (result) {
 
         var last_shout = $('.chats').find('>:first-child');
-
-        if(last_shout.data('id') < result.chat.id) {
-            load_chat(result.chat.id);
+        if (result.response.last_id == 0) {
+            console.info("Shoutbox is empty");
+        }
+        else
+        {
+            if (last_shout.data('id') < result.response.last_id) {
+                load_chat(result.response.last_id);
+            }
         }
 
     });
 
-    $('time').timeago();
+
 }
 
 function load_chat(id) {
@@ -73,11 +83,9 @@ function load_chat(id) {
 
     chat_message.success(function(result) {
 
-        var created = new Date(result.chat.created);
-
-        var code = '<li data-id="' + result.chat.id +'" class="list-group-item">\n';
-        code += '<span class="text-muted pull-right">' + created.toLocaleString() + '</span>\n';
-        code += '<span class="role ' + result.chat.user.primary_role.name + '">' + result.chat.user.username + '</span> &raquo; ' + result.chat.message + '\n';
+        var code = '<li data-name="'+ result.response.chat.user.username +'" data-id="' + result.response.chat.message.id +'" class="list-group-item">\n';
+        code += '<p class="message"><span class="text-muted pull-right">' + result.response.chat.message.created + '</span>\n';
+        code += '<span class="role ' + result.response.chat.user.primary_role + '">' + result.response.chat.user.username + '</span> &raquo; ' + result.response.chat.message.content + '</p>\n';
         code += '</li>';
 
         $('.chats').prepend(code);

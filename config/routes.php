@@ -51,7 +51,9 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'landing', 'home']);
     $routes->connect('/chat', ['controller' => 'Pages', 'action' => 'index']);
 
-
+    $routes->connect('/login', ['controller' => 'Users', 'action' => 'login']);
+    $routes->connect('/register', ['controller' => 'Users', 'action' => 'add']);
+    $routes->connect('/chats/archive', ['controller' => 'Pages', 'action' => 'archive']);
 
     /**
      * Connect catchall routes for all controllers.

@@ -17,11 +17,11 @@
     button {
         padding:10px;
         border:0;
-        background:#3DA1F0;
+        background: #f04b3b;
         color:#fff;
     }
     button:hover {
-        background:#3EB1F0
+        background: #af372c
     }
     small {
         margin:10px;
@@ -32,14 +32,14 @@
 </style>
 <div class="box">
     <h1>
-        Welkom op Chatzor
+        Reset je wachtwoord!
     </h1>
     <p>
-        Hey <?= $username; ?>, wat leuk dat je ook op Chatzor bent! We hopen je snel in de shoutbox te zien!
-        Druk op de knop beneden om je e-mail te activeren!
+        Hey <?= $username; ?>, Je hebt een aanvraag gedaan om je wachtwoord te veranderen! Klik op de knop beneden om dit te voltooien!
+        Als jij dit niet was kun je deze mail negeren!
     </p>
     <p style="text-align:center;">
-        <a class="button" href="http://ubuntu.local/mailkeys/activate/<?= $token; ?>"><button>Activeer mijn account!</button></a>
+        <a class="button" href="http://ubuntu.local/mailkeys/password/<?= $token; ?>"><button>Reset mijn wachtwoord!</button></a>
     </p>
     <small>* Deze code werkt maar 24 uur!</small>
 </div>

@@ -10,6 +10,7 @@ namespace App\Controller\Ajax;
 
 
 use App\Controller\AppController;
+use Cake\Core\Configure;
 use Cake\I18n\Time;
 use Cake\Network\Exception\MethodNotAllowedException;
 use Cake\Network\Exception\NotFoundException;
@@ -25,14 +26,91 @@ class ChatsController extends AppController
 
     public function index() {
         if($this->request->isAjax()) {
-            $chats = $this->Chats->find('all', [
-                'contain' => [
-                    'Users' => ['PrimaryRole']
-                ],
-            ])->limit(10)->order(['Chats.created' => 'DESC']);
 
-            $this->set(compact('chats'));
-            $this->set('_serialize', ['chats']);
+            $this->loadComponent('Ubb');
+
+            if(!isset($this->request->query['after'])) {
+                $this->request->query['after'] = 0;
+            }
+            
+            $chatsFinder = $this->Chats->find('all')
+                ->where([
+                    'deleted' => 0,
+                    'OR' => [
+                        'OR' => [
+                            'user_id' => $this->Auth->user('id'),
+                            'whisper_to is' => null,
+                            'whisper_to' => $this->Auth->user('id')
+                        ]
+                    ]
+                ])
+                ->contain([
+                    'Users' => [
+                        'PrimaryRole'
+                    ],
+                    'Whispers' => [
+                        'PrimaryRole'
+                    ]
+                ])
+                ->order(['Chats.created' => 'DESC'])
+                ->limit(10);
+            
+            $chats = [];
+            $lastId = 0;
+            $i = 0;
+            
+            foreach($chatsFinder->all() as $chat) {
+                $chats[$i]['user']['username'] = h($chat->user->username);
+                $chats[$i]['user']['primary_role'] = h($chat->user->primary_role->name);
+
+                
+                $string = $this->Ubb->parse(h($chat->message));
+                
+                $string = str_replace(['&#039'], ["'"], $string);
+                
+                foreach(Configure::read("Blocked.words") as $key => $value) {
+                    $string = str_ireplace($key, "[{$value}]", $string);
+                }
+                
+                if(!is_null($chat->whisper_to)) {
+                    if($chat->whisper_to == $this->Auth->user('id')) {
+                        $string = "<b>". __("Whisper") .": </b>" . $string;
+                    }
+                    else
+                    {
+                        $string = "<b>" . __("Whisper to {0}", h($chat->whisper->username)) .": </b>" . $string;
+                    }
+                }
+                
+                $chats[$i]['message']['id'] = h($chat->id);
+                $chats[$i]['message']['content'] = $string;
+                $chats[$i]['message']['created'] = h($chat->created->nice());
+                $i++;
+            }
+
+            if($lastId == 0) {
+                $chatsFinder = $this->Chats->find('all')
+                    ->where([
+                        'deleted' => 0
+                    ])
+                    ->order([
+                        'created' => 'DESC'
+                    ]);
+
+                $lastMessage = $chatsFinder->first();
+                $lastId = $lastMessage->id;
+            }
+
+            if(count($chats) > 0) {
+                $response['chats'] = $chats;
+            }
+
+            $response['last_id'] = $lastId;
+
+            $this->set(compact('response'));
+            $this->set('_serialize', ['response']);
+
+
         }
         else
         {
@@ -42,6 +120,7 @@ class ChatsController extends AppController
 
     public function shout() {
         $this->loadComponent('Ubb');
+        $this->loadModel('Users');
         if($this->request->isAjax()) {
             if($this->request->is('post')) {
                 $lastChat = $this->Chats->findByUserId($this->Auth->user('id'))->select('created')->last();
@@ -56,8 +135,22 @@ class ChatsController extends AppController
                     $chat->user_id = $this->Auth->user('id');
                     $chat->message = $this->Ubb->parse(h($this->request->data['message']));
 
-                    if(strlen($this->request->data['message']) < 1) {
-                        $response = ['status' => 'error', 'message' => __('Empty shout')];
+                    $message_explode = explode(' ', $this->request->data['message']);
+
+                    $private = false;
+
+                    if($message_explode[0] == '/pvt') {
+                        $private = true;
+                        $private_user = $this->Users->findByUsername(h($message_explode[1]))->select(['id', 'username'])->first();
+                        if(!is_null($private_user)) {
+                            $chat->whisper_to = $private_user->id;
+                            
+                            $chat->message = str_replace('/pvt ' . $message_explode[1], '', $chat->message);
+                        }
+                    }
+
+                    if(strlen($this->request->data['message']) < 1 || strlen($this->request->data['message']) > 150) {
+                        $response = ['status' => 'error', 'message' => __('Invalid shout')];
                     }
                     else
                     {
@@ -96,30 +189,51 @@ class ChatsController extends AppController
         }
     }
 
-    public function lastid() {
-        if($this->request->isAjax()) {
-            $chat = $this->Chats->find('all')->select('id')->last();
-
-            $this->set(compact('chat'));
-            $this->set('_serialize', ['chat']);
-        }
-        else
-        {
-            throw new MethodNotAllowedException("AJAX request only");
-        }
-    }
-
     public function view($id) {
         if($this->request->isAjax()) {
+            $this->loadComponent('Ubb');
 
-            $chat = $this->Chats->get($id, ['contain' => ['Users' => ['PrimaryRole']]]);
+            $chatQuery = $this->Chats->get($id, ['contain' => [
+                'Users' => ['PrimaryRole'],
+                'Whispers' => ['PrimaryRole'],
+            ]]);
 
-            if(is_null($chat)) {
-                throw new NotFoundException("Shout not found!");
+            $chat['user']['username'] = h($chatQuery->user->username);
+            $chat['user']['primary_role'] = h($chatQuery->user->primary_role->name);
+
+
+            $string = $this->Ubb->parse(h($chatQuery->message));
+
+            $string = str_replace(['&#039'], ["'"], $string);
+
+            foreach(Configure::read("Blocked.words") as $key => $value) {
+                $string = str_ireplace($key, $value, $string);
             }
 
-            $this->set(compact('chat'));
-            $this->set('_serialize', ['chat']);
+            if(!is_null($chatQuery->whisper_to)) {
+                if($chatQuery->whisper_to == $this->Auth->user('id')) {
+                    $string = "<b>Fluister: </b>" . $string;
+                }
+                else
+                {
+                    $string = "<b>Fluister naar " . h($chatQuery->whisper->username) .": </b>" . $string;
+                }
+            }
+
+            $chat['message']['id'] = h($chatQuery->id);
+            $chat['message']['content'] = $string;
+            $chat['message']['created'] = h($chatQuery->created->nice());
+
+            if(is_null($chatQuery)) {
+                throw new NotFoundException("Shout not found!");
+            }
+            else
+            {
+                $response['chat'] = $chat;
+            }
+
+            $this->set(compact('response'));
+            $this->set('_serialize', ['response']);
         }
         else
         {

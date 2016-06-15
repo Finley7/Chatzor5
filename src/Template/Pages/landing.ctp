@@ -15,6 +15,7 @@
                         <?= $this->Form->input('password', ['class' => 'form-control']); ?>
                     </fieldset>
                     <?= $this->Form->button('Sign in', ['class' => 'btn btn-primary']); ?>
+                    <?= $this->Html->link(__('Wachtwoord vergeten?'), ['controller' => 'Users', 'action' => 'forgot']); ?>
                     <?= $this->Form->end(); ?>
                 </div>
             </div>

@@ -57,11 +57,7 @@ class MailkeysTable extends Table
             ->requirePresence('token', 'create')
             ->notEmpty('token')
             ->add('token', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
-        $validator
-            ->integer('activated')
-            ->requirePresence('activated', 'create')
-            ->notEmpty('activated');
+        
 
         return $validator;
     }

@@ -54,5 +54,43 @@ class PagesController extends AppController
         $activities = $this->Activities->find('all', ['contain' => ['Users' => ['PrimaryRole']]])->order(['date' => 'DESC'])->limit(10);
 
         $this->set(compact('activities'));
+
+        $this->set('title', __('Chatbox'));
+    }
+
+    public function archive()
+    {
+        $this->paginate = [
+            'limit' => 15,
+            'contain' => [
+                'Users' => ['PrimaryRole']
+            ]
+        ];
+
+        $this->loadModel('Chats');
+        $this->loadComponent('Ubb');
+
+        $chats = $this->Chats->find('all')
+            ->where([
+                'deleted' => 0,
+                'OR' => [
+                    'OR' => [
+                        'user_id' => $this->Auth->user('id'),
+                        'whisper_to is' => null,
+                        'whisper_to' => $this->Auth->user('id')
+                    ]
+                ]
+            ])
+            ->contain([
+                'Users' => [
+                    'PrimaryRole'
+                ],
+                'Whispers' => [
+                    'PrimaryRole'
+                ]
+            ])
+            ->order(['Chats.created' => 'DESC']);
+
+        $this->set('chats', $this->paginate($chats));
     }
 }

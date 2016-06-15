@@ -191,31 +191,16 @@ class UbbComponent extends Component
     {
         $bbcode = preg_replace("_\[b\](.*?)\[/b\]_si", '<b>$1</b>', $bbcode);
         $bbcode = preg_replace('_\[i\](.*?)\[/i\]_si', '<i>$1</i>', $bbcode);
-        $bbcode = str_replace("[hr]", '<hr />', $bbcode);
-        $bbcode = preg_replace("_\[h3\](.*?)\[/h3\]_si", '<h3>$1</h3>', $bbcode);
         $bbcode = preg_replace("_\[u\](.*?)\[/u\]_si", '<u>$1</u>', $bbcode);
         $bbcode = preg_replace("_\[center\](.*?)\[/center\]_si", '<center>$1</center>', $bbcode);
-        $bbcode = preg_replace("_\[list\](.*?)\[/list\]_si", '<ul>$1</ul>', $bbcode);
-        $bbcode = preg_replace("_\[item\](.*?)\[/item\]_si", '<li>$1</li>', $bbcode);
         $bbcode = preg_replace("_\[s\](.*?)\[/s\]_si", '<strike>$1</strike>', $bbcode);
-        $bbcode = preg_replace("_\[size=(.*?)\](.*?)\[/size\]_si", '<span style="font-size: $1px">$2</span>', $bbcode);
-        $bbcode = preg_replace("_\[color=(.*?)\](.*?)\[/color\]_si", '<span style="color: $1;">$2</span>', $bbcode);
-        $bbcode = preg_replace("_\[font=(.*?)\](.*?)\[/font\]_si", '<span style="font-family: $1">$2</span>', $bbcode);
-        $bbcode = preg_replace("_\[hl=(.*?)\](.*?)\[/hl\]_si", '<span style="background: $1">$2</span>', $bbcode);
         $bbcode = preg_replace("_\[url\]http://(.*?)\[/url\]_si", '<a href="http://$1" target="_blank">$1</a>', $bbcode);
         $bbcode = preg_replace("_\[url\](.*?)\[/url\]_si", '<a href="http://$1" target="_blank">$1</a>', $bbcode);
         $bbcode = preg_replace("_\[url=http://(.*?)\](.*?)\[/url\]_si", '<a href="http://$1" target="_blank">$2</a>', $bbcode);
         $bbcode = preg_replace("_\[url=(.*?)\](.*?)\[/url\]_si", '<a href="http://$1" target="_blank">$2</a>', $bbcode);
-        $bbcode = preg_replace("_\[align=center\](.*?)\[/align\]_si", '<div id="centerBlock">$1</div>', $bbcode);
-        $bbcode = preg_replace("_\[align=left\](.*?)\[/align\]_si", '<div id="leftBlock">$1</div>', $bbcode);
-        $bbcode = preg_replace("_\[align=right\](.*?)\[/align\]_si", '<div id="rightBlock">$1</div>', $bbcode);
-        $bbcode = preg_replace("_\[youtube\](.*?)\[/youtube\]_si", '<iframe src="$1" id="ytBlock"></iframe>', $bbcode);
-        $bbcode = preg_replace("_\[yt\](.*?)\[/yt\]_si", '<iframe src="$1" id="ytBlock"></iframe>', $bbcode);
         $bbcode = preg_replace('#(^|[ \n\r\t])([a-z0-9]{1,6}://([a-z0-9\-]{1,}(\.?)){1,}[a-z]{2,5}(:[0-9]{2,5}){0,1}((\/|~|\#|\?|=|&amp;|&|\+){1}[a-z0-9\-._%]{0,}){0,})#si', '\\1<a target="_blank" href="\\2">\\2</a>', $bbcode);
         $bbcode = preg_replace('#(^|[ \n\r\t])((www\.){1}([a-z0-9\-]{1,}(\.?)){1,}[a-z]{2,5}(:[0-9]{2,5}){0,1}((\/|~|\#|\?|=|&amp;|&|\+){1}[a-z0-9\-._%]{0,}){0,})#si', '\\1<a target="_blank" href="http://\\2">\\2</a>', $bbcode);
         $bbcode = preg_replace('#(^|[ \n\r\t])(([a-z0-9\-_]{1,}(\.?)){1,}@([a-z0-9\-]{1,}(\.?)){1,}[a-z]{2,5})#si', '\\1<a href="mailto:\\2">\\2</a>', $bbcode);
-        $bbcode = preg_replace("_\[big](.*)\[/big\]_si", '<span style="font-size:16px">$1</span>', $bbcode);
-        $bbcode = preg_replace("_\[small](.*)\[/small\]_si", '<small>$1</small>', $bbcode);
 
         return $bbcode;
     }

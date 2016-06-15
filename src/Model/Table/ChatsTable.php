@@ -39,6 +39,12 @@ class ChatsTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
+
+        $this->belongsTo('Whispers', [
+            'className' => 'Users',
+            'foreignKey' => 'whisper_to',
+            'joinType' => 'LEFT'
+        ]);
     }
 
     /**

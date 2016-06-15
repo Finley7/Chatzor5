@@ -1,8 +1,8 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,100italic,100,400italic,700,700italic);
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300italic,300,100italic,100,400italic,700,700italic);
 body, html {
     background: url(../img/geometry2.png);
     border-radius:.3rem;
-    font-family: 'Helvetica Neue', 'Open Sans', sans-serif;
+    font-family: 'Helvetica Neue', 'Lato', sans-serif;
 }
 .menu-header {
     background: #3da1f0;
@@ -21,8 +21,16 @@ body, html {
     font-size:15px;
 }
 .chats {
-    height:300px;
+    height:297px;
+    max-width:748px;
     overflow-y:scroll;
+    overflow-x:hidden;
+}
+p {
+    margin:0 0 1px;
+}
+.chatbody {
+    max-width:748px;
 }
 .Gebruiker, .Administrator, .Mod {
     font-weight:700;
@@ -36,4 +44,7 @@ body, html {
 .error-message {
     color:#bd0000;
     font-weight:700;
+}
+.message {
+    word-break: keep-all;
 }

@@ -54,7 +54,7 @@ class AppController extends Controller
             'prefix' => false,
             'loginRedirect' => [
                 'controller' => 'Pages',
-                'action' => 'dashboard',
+                'action' => 'index',
                 'prefix' => false
             ],
             'loginAction' => [
@@ -74,7 +74,11 @@ class AppController extends Controller
             $this->set(compact('user'));
 
             if ($this->Auth->user('primary_role') == 3) {
-                throw new ForbiddenException('Je moet je account nog activeren!');
+                if($this->Auth->logout())
+                {
+                    $this->Flash->error(__('Activeer eerst je account!'));
+                    return $this->redirect('/');
+                }
             }
         }
     }
