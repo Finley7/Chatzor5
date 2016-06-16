@@ -39,7 +39,7 @@
         Druk op de knop beneden om je e-mail te activeren!
     </p>
     <p style="text-align:center;">
-        <a class="button" href="http://ubuntu.local/mailkeys/activate/<?= $token; ?>"><button>Activeer mijn account!</button></a>
+        <?= $this->Html->link(__('Activate my account'), ['controller' => 'Mailkeys', 'action' => 'activate', $token], ['class' => 'button']); ?>
     </p>
     <small>* Deze code werkt maar 24 uur!</small>
 </div>

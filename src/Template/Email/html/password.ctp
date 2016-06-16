@@ -39,7 +39,7 @@
         Als jij dit niet was kun je deze mail negeren!
     </p>
     <p style="text-align:center;">
-        <a class="button" href="http://ubuntu.local/mailkeys/password/<?= $token; ?>"><button>Reset mijn wachtwoord!</button></a>
+        <?= $this->Html->link(__('Request a new password'), ['controller' => 'Mailkeys', 'action' => 'password', $token], ['class' => 'button']); ?>
     </p>
     <small>* Deze code werkt maar 24 uur!</small>
 </div>
