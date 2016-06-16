@@ -39,7 +39,7 @@
         Druk op de knop beneden om je e-mail te activeren!
     </p>
     <p style="text-align:center;">
-        <?= $this->Html->link(__('Activate my account'), ['controller' => 'Mailkeys', 'action' => 'activate', $token], ['class' => 'button']); ?>
+        <a href="<?= $this->Url->build(['controller' => 'Mailkeys', 'action' => 'activate', $token]); ?>"><button><?= __('Activate my account'); ?></button></a>
     </p>
     <small>* Deze code werkt maar 24 uur!</small>
 </div>

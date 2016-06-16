@@ -39,7 +39,7 @@
         Als jij dit niet was kun je deze mail negeren!
     </p>
     <p style="text-align:center;">
-        <?= $this->Html->link(__('Request a new password'), ['controller' => 'Mailkeys', 'action' => 'password', $token], ['class' => 'button']); ?>
+        <a href="<?= $this->Url->build(['controller' => 'Mailkeys', 'action' => 'password', $token]); ?>"><button><?= __('Reset my password'); ?></button></a>
     </p>
     <small>* Deze code werkt maar 24 uur!</small>
 </div>
