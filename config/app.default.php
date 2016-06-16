@@ -56,6 +56,12 @@ return [
         ],
     ],
 
+    'Blocked' => [
+        'words' => [
+            
+        ]
+    ],
+
     /**
      * Security and encryption configuration
      *
