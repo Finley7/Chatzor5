@@ -75,6 +75,10 @@ class UsersTable extends Table
                 'rule' => ['compareWith', 'password'],
                 'message' => __('The passwords do not match!')
             ])
+             ->add('username', 'matches', [
+                'rule' => ['alphaNumeric', 'username'],
+                'message' => __('The passwords do not match!')
+            ])
             ->email('email', __('This is not a valid e-mail!'))
             ->notEmpty('email', __('An e-mail is required!'));
     }
