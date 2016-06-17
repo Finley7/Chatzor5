@@ -7,7 +7,7 @@
             <?= $this->Html->link('<i class="fa fa-dashboard"></i> ' . __('Dashboard'),
                 [
                     'controller' => 'Pages',
-                    'action' => 'dashboard',
+                    'action' => 'index',
                     'prefix' => 'management',
                 ],
                 [
