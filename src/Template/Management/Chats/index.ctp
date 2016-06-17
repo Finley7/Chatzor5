@@ -26,7 +26,7 @@
                     $string = str_replace(['&#039'], ["'"], $string);
 
                     foreach(Cake\Core\Configure::read("Blocked.words") as $key => $value) {
-                        $string = str_ireplace($key, "[{$value}]", $string);
+                        $string = "<strong>[GEFILTERD]</strong> " .$this->Ubb->parse(h($chat->message));
                     }
 
                     if(!is_null($chat->whisper_to)) {
@@ -42,7 +42,7 @@
                     <tr>
                         <td><?= $chat->id; ?></td>
                         <td><span class="role <?= $chat->user->primary_role->name; ?>"><?= $chat->user->username; ?></span></td>
-                        <td><?= ($chat->deleted) ? '[DELETED] ' . $string : $string; ?></td>
+                        <td><?= ($chat->deleted) ? '<strong>[DELETED]</strong> ' . $string : $string; ?></td>
                         <td><?= $chat->created->nice(); ?></td>
                         <td><?= $this->Form->postButton('<i class="fa fa-trash"></i>', [
                                 'controller' => 'Chats',
