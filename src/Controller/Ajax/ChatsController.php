@@ -147,7 +147,7 @@ class ChatsController extends AppController
                         {
                             $response = ['status' => 'error', 'message' => __('Could not save')];
                         }
-                        
+
                         $private = true;
                         $private_user = $this->Users->findByUsername(h($message_explode[1]))->select(['id', 'username'])->first();
                         if(!is_null($private_user)) {
@@ -228,8 +228,6 @@ class ChatsController extends AppController
 
 
             $string = h($chatQuery->message);
-
-            $string = str_replace(['&#039'], ["'"], $string);
 
             foreach(Configure::read("Blocked.words") as $key => $value) {
                 $string = str_ireplace($key, $value, $string);
