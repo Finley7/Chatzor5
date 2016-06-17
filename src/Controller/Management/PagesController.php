@@ -35,7 +35,14 @@ class PagesController extends AppController
      */
     public function index()
     {
+        $this->loadModel('Chats');
+        $this->loadModel('Users');
+
+        $chats = $this->Chats->find('all');
+        $users= $this->Users->find('all')->select('id');
+
         $this->set('title', __('Dashboard'));
+        $this->set(compact('chats', 'users'));
     }
 
 }

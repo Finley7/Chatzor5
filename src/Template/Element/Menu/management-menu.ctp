@@ -15,6 +15,39 @@
                     'escape' => false
                 ]
             ); ?>
+            <?= $this->Html->link('<i class="fa fa-comment"></i> ' . __('Chat management'),
+                [
+                    'controller' => 'Chats',
+                    'action' => 'index',
+                    'prefix' => 'management',
+                ],
+                [
+                    'class' => 'list-group-item',
+                    'escape' => false
+                ]
+            ); ?>
+            <?= $this->Html->link('<i class="fa fa-users"></i> ' . __('User management'),
+                [
+                    'controller' => 'Users',
+                    'action' => 'index',
+                    'prefix' => 'management',
+                ],
+                [
+                    'class' => 'list-group-item',
+                    'escape' => false
+                ]
+            ); ?>
+            <?= $this->Html->link('<i class="fa fa-user-times"></i> ' . __('Banning'),
+                [
+                    'controller' => 'Bans',
+                    'action' => 'index',
+                    'prefix' => 'management',
+                ],
+                [
+                    'class' => 'list-group-item',
+                    'escape' => false
+                ]
+            ); ?>
         </div>
     </div>
 </div>
