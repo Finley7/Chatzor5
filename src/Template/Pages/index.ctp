@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="col-md-4 col-xs-12">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
                 <div class="panel-heading"><?= __('Last seen active'); ?></div>
                 <ul class="active-users list-group">
                     <?php foreach($activities as $activity): ?>
