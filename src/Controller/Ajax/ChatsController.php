@@ -125,6 +125,10 @@ class ChatsController extends AppController
             if($this->request->is('post')) {
                 $lastChat = $this->Chats->findByUserId($this->Auth->user('id'))->select('created')->last();
 
+                if(strlen($this->request->data['message']) < 1) {
+                    throw new MethodNotAllowedException();
+                }
+
                 if(!is_null($lastChat) && $lastChat->created->toUnixString() + 5 > Time::now()->toUnixString()) {
                     $response = ['status' => 'error', 'message' => __('Wait 5 seconds')];
                 }
@@ -193,10 +197,27 @@ class ChatsController extends AppController
         if($this->request->isAjax()) {
             $this->loadComponent('Ubb');
 
-            $chatQuery = $this->Chats->get($id, ['contain' => [
-                'Users' => ['PrimaryRole'],
-                'Whispers' => ['PrimaryRole'],
-            ]]);
+            $chatQuery = $this->Chats->findById($id)
+            ->where([
+                    'deleted' => 0,
+                    'OR' => [
+                        'OR' => [
+                            'user_id' => $this->Auth->user('id'),
+                            'whisper_to is' => null,
+                            'whisper_to' => $this->Auth->user('id')
+                        ]
+                    ]
+                ])
+                ->contain([
+                    'Users' => [
+                        'PrimaryRole'
+                    ],
+                    'Whispers' => [
+                        'PrimaryRole'
+                    ]
+                ])
+                ->order(['Chats.created' => 'DESC'])
+                ->first();
 
             $chat['user']['username'] = h($chatQuery->user->username);
             $chat['user']['primary_role'] = h($chatQuery->user->primary_role->name);
@@ -212,11 +233,11 @@ class ChatsController extends AppController
 
             if(!is_null($chatQuery->whisper_to)) {
                 if($chatQuery->whisper_to == $this->Auth->user('id')) {
-                    $string = "<b>Fluister: </b>" . $string;
+                    $string = "<b>Whisper: </b>" . $string;
                 }
                 else
                 {
-                    $string = "<b>Fluister naar " . h($chatQuery->whisper->username) .": </b>" . $string;
+                    $string = "<b>Whisper to " . h($chatQuery->whisper->username) .": </b>" . $string;
                 }
             }
 
