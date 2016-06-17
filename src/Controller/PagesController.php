@@ -52,8 +52,8 @@ class PagesController extends AppController
     {
         $this->loadModel('Activities');
         $activities = $this->Activities->find('all', ['contain' => ['Users' => ['PrimaryRole']]])
-        ->where(['OR' => ['OR' => ['action' => 'logged_in', 'action' => 'new_shout']]])
-        ->order(['date' => 'DESC'])->limit(10);
+            ->where(['OR' => ['OR' => ['action is' => 'logged_in', 'action' => 'new_shout']]])
+            ->order(['date' => 'DESC'])->limit(10);
 
         $this->set(compact('activities'));
 
