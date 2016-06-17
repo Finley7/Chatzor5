@@ -83,7 +83,7 @@ class ChatsController extends AppController
                 }
                 
                 $chats[$i]['message']['id'] = h($chat->id);
-                $chats[$i]['message']['content'] = $string;
+                $chats[$i]['message']['content'] = $this->Ubb->parse($string);
                 $chats[$i]['message']['created'] = h($chat->created->nice());
                 $i++;
             }
@@ -242,7 +242,7 @@ class ChatsController extends AppController
             }
 
             $chat['message']['id'] = h($chatQuery->id);
-            $chat['message']['content'] = $string;
+            $chat['message']['content'] = $this->Ubb->parse($string);
             $chat['message']['created'] = h($chatQuery->created->nice());
 
             if(is_null($chatQuery)) {
