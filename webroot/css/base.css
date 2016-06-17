@@ -32,11 +32,15 @@ p {
 .chatbody {
     max-width:748px;
 }
-.Gebruiker, .Administrator, .Mod {
+.Gebruiker, .Administrator, .Mod, .Tester {
     font-weight:700;
 }
+
 .Administrator {
     color: #bd0000;
+}
+.Tester {
+    color:#79d242;
 }
 .emojione {
     height:16px;

@@ -75,9 +75,15 @@ class UsersTable extends Table
                 'rule' => ['compareWith', 'password'],
                 'message' => __('The passwords do not match!')
             ])
-             ->add('username', 'matches', [
+            ->add('username', 'matches', [
                 'rule' => ['alphaNumeric', 'username'],
                 'message' => __('The username must only contain alpha-numeric characters!')
+            ])
+            ->add('username', [
+                'length' => [
+                    'rule' => ['maxLength', 15],
+                    'message' => __('The username limit is 15 characters'),
+                ]
             ])
             ->email('email', __('This is not a valid e-mail!'))
             ->notEmpty('email', __('An e-mail is required!'));
