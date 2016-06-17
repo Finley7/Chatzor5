@@ -39,7 +39,7 @@
         Druk op de knop beneden om je e-mail te activeren!
     </p>
     <p style="text-align:center;">
-        <a href="<?= $this->Url->build(['controller' => 'Mailkeys', 'action' => 'activate', $token]); ?>"><button><?= __('Activate my account'); ?></button></a>
+        <a href="http://chat.finleyhd.nl/mailkeys/activate/<?= $token; ?>"><button><?= __('Activate my account'); ?></button></a>
     </p>
     <small>* Deze code werkt maar 24 uur!</small>
 </div>
