@@ -31,8 +31,8 @@ endif;
             <div class="panel-heading">
                 <?= h($message) ?>
             </div>
-                <legend><?= h($message) ?></legend>
                 <div class="panel-body">
+                <legend><?= h($message) ?></legend>
                     <p class="error">
                     <strong><?= __d('cake', 'Error') ?>: </strong>
                     <?= sprintf(
