@@ -94,6 +94,10 @@ if (!Configure::read('debug')) {
  */
 date_default_timezone_set('Europe/Amsterdam');
 
+use Cake\I18n\I18n;
+
+I18n::locale('nl_NL');
+
 /**
  * Configure the mbstring extension to use the correct encoding.
  */
@@ -104,6 +108,7 @@ mb_internal_encoding(Configure::read('App.encoding'));
  * formatted and sets the default language to use for translations.
  */
 ini_set('intl.default_locale', Configure::read('App.defaultLocale'));
+
 
 /**
  * Register application error and exception handlers.
