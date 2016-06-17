@@ -24,11 +24,7 @@
                     $string = $this->Ubb->parse(h($chat->message));
 
                     $string = str_replace(['&#039'], ["'"], $string);
-
-                    foreach(Cake\Core\Configure::read("Blocked.words") as $key => $value) {
-                        $string = "<strong>[GEFILTERD]</strong> " .$this->Ubb->parse(h($chat->message));
-                    }
-
+                    
                     if(!is_null($chat->whisper_to)) {
                         if($chat->whisper_to == $user->id) {
                             $string = "<b>". __("Whisper") .": </b>" . $string;
