@@ -166,8 +166,6 @@ class UbbComponent extends Component
             ':Þ' => '1f61b',
             ':þ' => '1f61b',
             ':-þ' => '1f61b',
-            ':-b' => '1f61b',
-            ':b' => '1f61b',
             'd:' => '1f61b',
             ':-O' => '1f62e',
             ':O' => '1f62e',

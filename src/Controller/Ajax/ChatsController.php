@@ -66,8 +66,6 @@ class ChatsController extends AppController
                 
                 $string = h($chat->message);
                 
-                $string = str_replace(['&#039'], ["'"], $string);
-                
                 foreach(Configure::read("Blocked.words") as $key => $value) {
                     $string = str_ireplace($key, "[{$value}]", $string);
                 }
@@ -137,13 +135,19 @@ class ChatsController extends AppController
                     $chat = $this->Chats->newEntity();
 
                     $chat->user_id = $this->Auth->user('id');
-                    $chat->message = h($this->request->data['message']);
+                    $chat->message = $this->request->data['message'];
 
                     $message_explode = explode(' ', $this->request->data['message']);
 
                     $private = false;
 
                     if($message_explode[0] == '/pvt') {
+
+                        if(strlen($message_explode[1]) < 1)
+                        {
+                            $response = ['status' => 'error', 'message' => __('Could not save')];
+                        }
+                        
                         $private = true;
                         $private_user = $this->Users->findByUsername(h($message_explode[1]))->select(['id', 'username'])->first();
                         if(!is_null($private_user)) {

@@ -39,11 +39,10 @@ $(function() {
                 'dataType': 'JSON'
             });
 
-            $('#message').val('');
 
             request.success(function(result) {
                 if(result.response.status == 'ok') {
-                    
+                    $('#message').val('');
                 }
                 else {
                     alert(result.response.message);
