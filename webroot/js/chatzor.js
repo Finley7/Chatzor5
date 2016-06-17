@@ -43,7 +43,7 @@ $(function() {
 
             request.success(function(result) {
                 if(result.response.status == 'ok') {
-                    lastshout();
+                    
                 }
                 else {
                     alert(result.response.message);
