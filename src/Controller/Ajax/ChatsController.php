@@ -64,7 +64,7 @@ class ChatsController extends AppController
                 $chats[$i]['user']['primary_role'] = h($chat->user->primary_role->name);
 
                 
-                $string = $this->Ubb->parse(h($chat->message));
+                $string = h($chat->message);
                 
                 $string = str_replace(['&#039'], ["'"], $string);
                 
@@ -133,7 +133,7 @@ class ChatsController extends AppController
                     $chat = $this->Chats->newEntity();
 
                     $chat->user_id = $this->Auth->user('id');
-                    $chat->message = $this->Ubb->parse(h($this->request->data['message']));
+                    $chat->message = h($this->request->data['message']);
 
                     $message_explode = explode(' ', $this->request->data['message']);
 
@@ -202,7 +202,7 @@ class ChatsController extends AppController
             $chat['user']['primary_role'] = h($chatQuery->user->primary_role->name);
 
 
-            $string = $this->Ubb->parse(h($chatQuery->message));
+            $string = h($chatQuery->message);
 
             $string = str_replace(['&#039'], ["'"], $string);
 
