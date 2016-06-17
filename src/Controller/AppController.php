@@ -18,6 +18,7 @@ use App\Model\Entity\User;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 use Cake\Network\Exception\ForbiddenException;
+use Cake\Network\Exception\MethodNotAllowedException;
 
 /**
  * Application Controller
@@ -76,9 +77,13 @@ class AppController extends Controller
             if ($this->Auth->user('primary_role') == 3) {
                 if($this->Auth->logout())
                 {
-                    $this->Flash->error(__('Activeer eerst je account!'));
+                    $this->Flash->error(__('Activate your account first!'));
                     return $this->redirect('/');
                 }
+            }
+
+            if ($this->Auth->user('primary_role') == 6) {
+                throw new MethodNotAllowedException(__("You are banned!"));
             }
         }
     }
