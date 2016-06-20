@@ -12,6 +12,7 @@
                         <?= $this->Form->file('avatar'); ?>
                     </fieldset>
                     <?= $this->Form->submit(__('Update avatar')); ?>
+                    <input type="hidden" value="<?= $editUser->avatar; ?>">
                 </div>
             </div>
         </div>
