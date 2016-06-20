@@ -13,7 +13,7 @@
                         geschreven door <strong><?= $this->Number->format($users->count()); ?></strong> leden.
                         <br>
                         Hiervan zijn er <strong><?= $this->Number->format($chats->where(['whisper_to is not' => null])->count()); ?></strong> prive.
-                        Van deze chatberichten zijn er <strong><?= $this->Number->format($chats->where(['deleted is not' => 0])->count()); ?></strong> verwijderd
+                        Van deze chatberichten zijn er <strong><?= $this->Number->format($chats->where(['deleted' => 1])->count()); ?></strong> verwijderd
                     </div>
                 </div>
             </div>
