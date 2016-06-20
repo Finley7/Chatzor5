@@ -62,6 +62,7 @@ class ChatsController extends AppController
             foreach($chatsFinder->all() as $chat) {
                 $chats[$i]['user']['username'] = h($chat->user->username);
                 $chats[$i]['user']['primary_role'] = h($chat->user->primary_role->name);
+                $chats[$i]['user']['avatar'] = h($chat->user->avatar);
 
                 
                 $string = h($chat->message);
@@ -219,6 +220,7 @@ class ChatsController extends AppController
 
             $chat['user']['username'] = h($chatQuery->user->username);
             $chat['user']['primary_role'] = h($chatQuery->user->primary_role->name);
+            $chat['user']['avatar'] = h($chatQuery->user->avatar);
 
 
             $string = h($chatQuery->message);

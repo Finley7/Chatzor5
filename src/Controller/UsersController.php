@@ -3,9 +3,11 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\Filesystem\File;
 use Cake\Mailer\Email;
 use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Text;
 
 /**
  * Users Controller
@@ -180,6 +182,45 @@ class UsersController extends AppController
                 }
             }
         }
+    }
+
+    public function settings() {
+
+        $editUser = $this->Users->get($this->Auth->user('id'));
+        $allowed_types = ['image/jpeg', 'image/png', 'image/jpg'];
+        if($this->request->is(['patch', 'post', 'put'])){
+            if(!@getimagesize($this->request->data['avatar']['tmp_name'])) {
+                $this->Flash->error(__('Je hebt geen geldige avatar geselecteerd'));
+                return $this->redirect(['view' => 'avatar']);
+            }
+            if(!in_array($this->request->data['avatar']['type'], $allowed_types)) {
+                $this->Flash->error(__('Je hebt geen geldig formaat geupload'));
+                return $this->redirect(['view' => 'avatar']);
+            }
+            if($this->request->data['avatar']['size'] > 2000000) {
+                $this->Flash->error(__('Je hebt te grote avatar geupload!'));
+                return $this->redirect(['view' => 'avatar']);
+            }
+            $ext = explode('/', $this->request->data['avatar']['type']);
+            $avatar_url = 'avatar_' . Text::uuid() . '_' . $editUser->username . '.' . $ext[1];
+            $editUser->avatar = $avatar_url;
+            if($this->Users->save($editUser))
+            {
+                $image_info = file_get_contents($this->request->data['avatar']['tmp_name']);
+                $avatar = new File('img/uploads/avatars/' . $avatar_url, true);
+                $avatar->append($image_info);
+                $avatar->create();
+                $this->Auth->setUser($editUser->toArray());
+                $this->Flash->success(__('Avatar geupload!'));
+                return $this->redirect(['action' => 'settings']);
+            }
+            else
+            {
+                $this->Flash->error(__('Er iets fout gegaan tijdens het opslaan!'));
+            }
+        }
+        $this->set('editUser', $editUser);
+        $this->set('page_parent', 'settings');
     }
 
 }
