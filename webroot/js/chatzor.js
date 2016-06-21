@@ -46,7 +46,7 @@ function load_chats() {
                 $.each(chats, function(key, chat){
 
                     var code = '<li data-name="'+ chat.user.username +'" data-id="' + chat.message.id +'" class="msg list-group-item">\n';
-                    code += '<img style="width:30px;margin:-5px 10px;display:inline-block;" class="img-circle avatar-image pull-left" src="./img/uploads/avatars/'+ chat.user.avatar +'">\n'
+                    code += '<img style="width:30px;margin:-5px 10px;display:inline-block;" class="img-circle avatar-image pull-left hidden-xs" src="./img/uploads/avatars/'+ chat.user.avatar +'">\n'
                     code += '<p class="message"><span class="text-muted pull-right">' + chat.message.created + '</span>\n';
                     code += '<span class="user role ' + chat.user.primary_role + '">' + chat.user.username + '</span> &raquo; ' + chat.message.content + '</p>\n';
                     code += '</li>';
@@ -85,7 +85,7 @@ function load_chat(id) {
     chat_message.success(function(result) {
 
         var code = '<li data-name="'+ result.response.chat.user.username +'" data-id="' + result.response.chat.message.id +'" class="list-group-item">\n';
-        code += '<img style="width:30px;margin:-5px 10px;display:inline-block;" class="img-circle avatar-image pull-left" src="./img/uploads/avatars/'+ result.response.chat.user.avatar +'">\n'
+        code += '<img style="width:30px;margin:-5px 10px;display:inline-block;" class="img-circle avatar-image pull-left hidden-xs" src="./img/uploads/avatars/'+ result.response.chat.user.avatar +'">\n'
         code += '<p class="message"><span class="text-muted pull-right">' + result.response.chat.message.created + '</span>\n';
         code += '<span class="role ' + result.response.chat.user.primary_role + '">' + result.response.chat.user.username + '</span> &raquo; ' + result.response.chat.message.content + '</p>\n';
         code += '</li>';

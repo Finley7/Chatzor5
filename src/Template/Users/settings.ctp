@@ -12,7 +12,6 @@
                         <?= $this->Form->file('avatar'); ?>
                     </fieldset>
                     <?= $this->Form->submit(__('Update avatar')); ?>
-                    <?= debug($editUser); ?>
                 </div>
             </div>
         </div>
