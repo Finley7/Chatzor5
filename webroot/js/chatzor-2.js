@@ -1,7 +1,7 @@
 $(function () {
     load_chats();
     load_activities();
-    setInterval(lastshout, 2000);
+    setInterval(lastshout, 1000);
     setInterval(load_activities, 60000);
 
     $('#messageform').submit(function (e) {

@@ -3,10 +3,6 @@
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="user-info clearfix">
-                    <?= $this->Html->image('uploads/avatars/' . $user->avatar, [
-                        'class' => 'img-circle avatar-image pull-right hidden-xs',
-                        'style' => 'width:40px;height:40px;margin:8px',
-                    ]); ?>
                     <div class="chatbox">
                         <?= $this->Form->create(null, [
                             'url' => ['controller' => 'Chats', 'action' => 'shout', 'prefix' => 'ajax'],
@@ -36,6 +32,12 @@
                 </div>
                 <ul class="list-group user-activities">
                 </ul>
+                <div class="panel-footer">
+                    <span class="role Administrator">Administrator</span>,
+                    <span class="role Gebruiker">Gebruiker</span>,
+                    <span class="role Tester">Tester</span>,
+                    <span class="role Moderator">Moderator</span>
+                </div>
             </div>
         </div>
     </div>

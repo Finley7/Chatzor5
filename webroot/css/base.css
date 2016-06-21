@@ -66,3 +66,7 @@ p {
 .chatbox {
     margin:10px;
 }
+.Moderator {
+    color: #1e6ebd;
+    font-weight:700;
+}
