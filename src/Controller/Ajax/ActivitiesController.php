@@ -21,10 +21,42 @@ class ActivitiesController extends AppController
 
     public function index() {
         if($this->request->isAjax() || 1==1) {
-            $activities = $this->Activities->find('all', ['contain' => ['Users' => ['PrimaryRole']]])->limit(10);
-            
-            $this->set(compact('activities'));
-            $this->set('_serialize', ['activities']);
+            $activitiesFinder = $this->Activities->find('all',
+                [
+                    'contain' => [
+                        'Users' => [
+                           'PrimaryRole'
+                        ]
+                    ]
+                ])
+                ->where(['OR' => [
+                    'OR' => [
+                        'action is' => 'logged_in',
+                        'action' => 'new_shout'
+                    ],
+                ]])
+                ->where(['Users.primary_role is not' => 6])
+                ->limit(10);
+
+            $activities = [];
+            $i = 0;
+
+            foreach($activitiesFinder->all() as $activity) {
+                $activities[$i]['user']['username'] = $activity->user->username;
+                $activities[$i]['user']['primary_role'] = $activity->user->primary_role->name;
+                $activities[$i]['user']['avatar'] = $activity->user->avatar;
+                $activities[$i]['date']['nice'] = $activity->date->timeAgoInWords();
+
+                $i++;
+            }
+
+            if(count($activities) > 0) {
+                $response['activites'] = $activities;
+            }
+
+
+            $this->set(compact('response'));
+            $this->set('_serialize', ['response']);
         }
         else
         {

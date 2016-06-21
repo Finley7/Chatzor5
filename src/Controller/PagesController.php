@@ -50,15 +50,17 @@ class PagesController extends AppController
 
     public function index() 
     {
-        $this->loadModel('Activities');
-        $activities = $this->Activities->find('all', ['contain' => ['Users' => ['PrimaryRole']]])
-            ->where(['OR' => ['OR' => ['action is' => 'logged_in', 'action' => 'new_shout']]])
-            ->order(['date' => 'DESC'])->limit(10);
+        $this->loadModel('Users');
+        $this->loadModel('Chats');
 
-        $this->set(compact('activities'));
+        $users = $this->Users->find('all')->select('id')->count();
+        $chats = $this->Chats->find('all')->select('id')->count();
+
+        $this->set(compact('users', 'chats'));
 
         $this->set('title', __('Chatbox'));
     }
+
 
     public function archive()
     {

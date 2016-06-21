@@ -54,6 +54,7 @@
                             <li><?= $this->Form->postLink(__('Logout'), ['controller' => 'Users', 'action' => 'logout']); ?></li>
                         </ul>
                     </li>
+                    <li><?= $this->Html->link(__('Archive'), ['controller' => 'Pages', 'action' => 'archive', 'prefix' => false]); ?></li>
                     <?php if($user->hasPermission('management_pages_index')): ?>
                         <li><?= $this->Html->link(__('Management'), ['controller' => 'Pages', 'action' => 'index', 'prefix' => 'management']); ?></li>
                     <?php endif; ?>

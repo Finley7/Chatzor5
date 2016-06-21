@@ -205,10 +205,6 @@ class UbbHelper extends Helper
         $bbcode = preg_replace("_\[color=(.*?)\](.*?)\[/color\]_si", '<span style="color: $1;">$2</span>', $bbcode);
         $bbcode = preg_replace("_\[font=(.*?)\](.*?)\[/font\]_si", '<span style="font-family: $1">$2</span>', $bbcode);
         $bbcode = preg_replace("_\[hl=(.*?)\](.*?)\[/hl\]_si", '<span style="background: $1">$2</span>', $bbcode);
-        $bbcode = preg_replace("_\[url\]http://(.*?)\[/url\]_si", '<a href="http://$1" target="_blank">$1</a>', $bbcode);
-        $bbcode = preg_replace("_\[url\](.*?)\[/url\]_si", '<a href="http://$1" target="_blank">$1</a>', $bbcode);
-        $bbcode = preg_replace("_\[url=http://(.*?)\](.*?)\[/url\]_si", '<a href="http://$1" target="_blank">$2</a>', $bbcode);
-        $bbcode = preg_replace("_\[url=(.*?)\](.*?)\[/url\]_si", '<a href="http://$1" target="_blank">$2</a>', $bbcode);
         $bbcode = preg_replace("_\[align=center\](.*?)\[/align\]_si", '<div id="centerBlock">$1</div>', $bbcode);
         $bbcode = preg_replace("_\[align=left\](.*?)\[/align\]_si", '<div id="leftBlock">$1</div>', $bbcode);
         $bbcode = preg_replace("_\[align=right\](.*?)\[/align\]_si", '<div id="rightBlock">$1</div>', $bbcode);

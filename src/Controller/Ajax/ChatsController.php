@@ -108,8 +108,6 @@ class ChatsController extends AppController
 
             $this->set(compact('response'));
             $this->set('_serialize', ['response']);
-
-
         }
         else
         {
@@ -128,50 +126,58 @@ class ChatsController extends AppController
                     throw new MethodNotAllowedException();
                 }
                 else {
+                    
+                    $userCheck = $this->Users->get($this->Auth->user('id'));
+                    
+                    if($userCheck->primary_role == Configure::read('App.banRole')) {
+                        throw new MethodNotAllowedException("You are banned!");
+                    }
+                    else {
 
-                    if (!is_null($lastChat) && $lastChat->created->toUnixString() + 5 > Time::now()->toUnixString()) {
-                        $response = ['status' => 'error', 'message' => __('Wait 5 seconds')];
-                    } else {
-                        $chat = $this->Chats->newEntity();
-
-                        $chat->user_id = $this->Auth->user('id');
-                        $chat->message = $this->request->data['message'];
-
-                        $message_explode = explode(' ', $this->request->data['message']);
-
-                        $private = false;
-
-                        if ($message_explode[0] == '/pvt') {
-
-                            if (strlen($message_explode[1]) < 1) {
-                                $response = ['status' => 'error', 'message' => __('Could not save')];
-                            }
-
-                            $private = true;
-                            $private_user = $this->Users->findByUsername(h($message_explode[1]))->select(['id', 'username'])->first();
-                            if (!is_null($private_user)) {
-                                $chat->whisper_to = $private_user->id;
-
-                                $chat->message = str_replace('/pvt ' . $message_explode[1], '', $chat->message);
-                            }
-                        }
-
-                        if (strlen($this->request->data['message']) < 1 || strlen($this->request->data['message']) > 150) {
-                            $response = ['status' => 'error', 'message' => __('Invalid shout')];
+                        if (!is_null($lastChat) && $lastChat->created->toUnixString() + 5 > Time::now()->toUnixString()) {
+                            $response = ['status' => 'error', 'message' => __('Wait 5 seconds')];
                         } else {
-                            if ($this->Chats->save($chat)) {
-                                $activityRegistry = TableRegistry::get('Activities');
-                                $activity = $activityRegistry->findByUserId($this->Auth->user('id'))->first();
+                            $chat = $this->Chats->newEntity();
 
-                                $activity->action = 'new_shout';
+                            $chat->user_id = $this->Auth->user('id');
+                            $chat->message = $this->request->data['message'];
 
-                                if ($activityRegistry->touch($activity, 'Activities.updated') && $activityRegistry->save($activity)) {
-                                    $response = ['status' => 'ok', 'id' => $chat->id];
-                                } else {
-                                    $response = ['status' => 'error', 'error' => __('Message could not be updated')];
+                            $message_explode = explode(' ', $this->request->data['message']);
+
+                            $private = false;
+
+                            if ($message_explode[0] == '/pvt') {
+
+                                if (strlen($message_explode[1]) < 1) {
+                                    $response = ['status' => 'error', 'message' => __('Could not save')];
                                 }
+
+                                $private = true;
+                                $private_user = $this->Users->findByUsername(h($message_explode[1]))->select(['id', 'username'])->first();
+                                if (!is_null($private_user)) {
+                                    $chat->whisper_to = $private_user->id;
+
+                                    $chat->message = str_replace('/pvt ' . $message_explode[1], '', $chat->message);
+                                }
+                            }
+
+                            if (strlen($this->request->data['message']) < 1 || strlen($this->request->data['message']) > 150) {
+                                $response = ['status' => 'error', 'message' => __('Invalid shout')];
                             } else {
-                                $response = ['status' => 'error', 'message' => __('Could not save')];
+                                if ($this->Chats->save($chat)) {
+                                    $activityRegistry = TableRegistry::get('Activities');
+                                    $activity = $activityRegistry->findByUserId($this->Auth->user('id'))->first();
+
+                                    $activity->action = 'new_shout';
+
+                                    if ($activityRegistry->touch($activity, 'Activities.updated') && $activityRegistry->save($activity)) {
+                                        $response = ['status' => 'ok', 'id' => $chat->id];
+                                    } else {
+                                        $response = ['status' => 'error', 'error' => __('Message could not be updated')];
+                                    }
+                                } else {
+                                    $response = ['status' => 'error', 'message' => __('Could not save')];
+                                }
                             }
                         }
                     }

@@ -1,51 +1,43 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-xs-12">
+        <div class="col-md-3">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Chatbox
-                    <div class="pull-right">
-                        <?= $this->Html->link(__('Archive'), ['controller' => 'Pages', 'action' => 'archive'], ['class' => 'btn btn-xs btn-primary']); ?>
-                    </div>
+                    <?= __('Last seen active'); ?>
                 </div>
-                <div class="panel-body chatbody">
-                    <?= $this->Form->create(null, [
+                <ul class="list-group user-activities">
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="user-info clearfix">
+                    <?= $this->Html->image('uploads/avatars/' . $user->avatar, [
+                        'class' => 'img-circle avatar-image pull-right hidden-xs',
+                        'style' => 'width:40px;height:40px;margin:8px',
+                    ]); ?>
+                    <div class="chatbox">
+                        <?= $this->Form->create(null, [
                             'url' => ['controller' => 'Chats', 'action' => 'shout', 'prefix' => 'ajax'],
-                            'id' => 'messageform'
+                            'id' => 'messageform',
+                            'style' => 'max-width:850px;'
                         ]);
-                    ?>
-                    <div class="input-group">
-                        <?= $this->Form->input('message', ['maxlength' => 150, 'autocomplete' => 'off', 'class' => 'form-control', 'label' => false, 'placeholder' => 'Please enter a message']); ?>
-                         <span class="input-group-btn">
-                             <?= $this->Form->button(__('Shout'), ['class' => 'btn btn-success']); ?>
+                        ?>
+                        <div class="input-group">
+                            <?= $this->Form->input('message', ['maxlength' => 150, 'autocomplete' => 'off', 'class' => 'form-control', 'label' => false, 'placeholder' => 'Please enter a message']); ?>
+                            <span class="input-group-btn">
+                             <?= $this->Form->button(__('Send message'), ['class' => 'btn btn-info']); ?>
                          </span>
+                        </div>
+                        <?= $this->Form->end(); ?>
                     </div>
-                    <?= $this->Form->end(); ?>
                 </div>
                 <ul class="list-group chats"></ul>
                 <div class="panel-footer">
-                    <div class="text-muted chats-total"></div>
+                    Er zijn in totaal <strong><?= $this->Number->format($users); ?></strong> aantal leden die <strong><?= $this->Number->format($chats); ?></strong> berichten geplaatst hebben.
                 </div>
-            </div>
-        </div>
-        <div class="col-md-4 col-xs-12">
-            <div class="panel panel-default">
-                <div class="panel-heading"><?= __('Last seen active'); ?></div>
-                <ul class="active-users list-group">
-                    <?php foreach($activities as $activity): ?>
-                        <li class="list-group-item">
-                            <span class="role <?= $activity->user->primary_role->name; ?>">
-                                <?= $activity->user->username; ?>
-                            </span>
-                            <span><i class="text-muted"><?= $activity->user->primary_role->name; ?></i></span>
-                            <div class="pull-right text-muted">
-                                <?= $activity->date->timeAgoInWords(); ?>
-                            </div>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
             </div>
         </div>
     </div>
 </div>
-<?= $this->Html->script('chatzor'); ?>
+<?= $this->Html->script('chatzor-2'); ?>
