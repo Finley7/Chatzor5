@@ -36,6 +36,7 @@ class ActivitiesController extends AppController
                     ],
                 ]])
                 ->where(['Users.primary_role is not' => 6])
+                ->order(['date' => 'DESC'])
                 ->limit(10);
 
             $activities = [];
