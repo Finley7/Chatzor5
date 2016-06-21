@@ -22,7 +22,6 @@ $(function () {
             request.success(function (result) {
                 if (result.response.status == 'ok') {
                     $('#message').val('');
-                    load_activities();
                 }
                 else {
                     alert(result.response.message);
@@ -104,8 +103,6 @@ function load_chat(id) {
             code += '</li>';
 
             $('.chats').prepend(code);
-
-            load_activities();
         }
     });
 }

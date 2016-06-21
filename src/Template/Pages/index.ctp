@@ -1,14 +1,5 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <?= __('Last seen active'); ?>
-                </div>
-                <ul class="list-group user-activities">
-                </ul>
-            </div>
-        </div>
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="user-info clearfix">
@@ -36,6 +27,15 @@
                 <div class="panel-footer">
                     Er zijn in totaal <strong><?= $this->Number->format($users); ?></strong> aantal leden die <strong><?= $this->Number->format($chats); ?></strong> berichten geplaatst hebben.
                 </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <?= __('Last seen active'); ?>
+                </div>
+                <ul class="list-group user-activities">
+                </ul>
             </div>
         </div>
     </div>
