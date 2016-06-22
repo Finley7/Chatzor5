@@ -4,7 +4,7 @@
         <div class="col-md-9 col-xs-12 col-lg-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <?= __('User management'); ?>
+                    <?= __('User search'); ?>
                 </div>
                 <div class="panel-body">
                     <?= $this->Form->create(null, [
