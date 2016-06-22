@@ -48,10 +48,10 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= $user->username; ?> <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><?= $this->Html->link(__('My profile'), ['controller' => 'Users', 'action' => 'view', $user->username]); ?></li>
-                            <li><?= $this->Html->link(__('Settings'), ['controller' => 'Users', 'action' => 'settings']); ?></li>
+                            <li><?= $this->Html->link(__('My profile'), ['controller' => 'Users', 'action' => 'view', 'prefix' => false, $user->username]); ?></li>
+                            <li><?= $this->Html->link(__('Settings'), ['controller' => 'Users', 'action' => 'settings', 'prefix' => false]); ?></li>
                             <li role="separator" class="divider"></li>
-                            <li><?= $this->Form->postLink(__('Logout'), ['controller' => 'Users', 'action' => 'logout']); ?></li>
+                            <li><?= $this->Form->postLink(__('Logout'), ['controller' => 'Users', 'action' => 'logout', 'prefix' => false]); ?></li>
                         </ul>
                     </li>
                     <li><?= $this->Html->link(__('Archive'), ['controller' => 'Pages', 'action' => 'archive', 'prefix' => false]); ?></li>

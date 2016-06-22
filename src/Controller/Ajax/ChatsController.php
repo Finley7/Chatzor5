@@ -129,7 +129,7 @@ class ChatsController extends AppController
                     
                     $userCheck = $this->Users->get($this->Auth->user('id'));
                     
-                    if($userCheck->primary_role == Configure::read('App.banRole')) {
+                    if($userCheck->primary_role == Configure::read('Roles.banRole')) {
                         throw new MethodNotAllowedException("You are banned!");
                     }
                     else {

@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <?= $this->element('Menu/management-menu'); ?>
-        <div class="col-md-8 col-xs-12 col-lg-8">
+        <div class="col-md-9 col-xs-12 col-lg-9">
             <div class="panel panel-default table-responsive">
                 <div class="panel-heading">
                     <?= __('Archive'); ?>

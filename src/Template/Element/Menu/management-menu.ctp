@@ -1,4 +1,4 @@
-<div class="col-md-4 col-lg-4 col-xs-12">
+<div class="col-md-3 col-lg-3 col-xs-12">
     <div class="panel panel-default">
         <div class="panel-heading">
             Menu

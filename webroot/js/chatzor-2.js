@@ -47,11 +47,7 @@ function load_chats() {
             $.each(value, function (key, chats) {
                 $.each(chats, function (key, chat) {
 
-                    if (chat.user.primary_role == 'Banned') {
-                        $('.chats').html("<div class='alert alert-danger'>Je bent verbannen van Chatzor!</div>");
-                        clearInterval(lastshout());
-                    }
-                    else {
+
                         var code = '<li data-name="' + chat.user.username + '" data-id="' + chat.message.id + '" class="msg list-group-item">\n';
                         code += '<img style="width:30px;height:30px;margin:-5px 10px;display:inline-block;" class="img-circle avatar-image pull-left hidden-xs" src="./img/uploads/avatars/' + chat.user.avatar + '">\n'
                         code += '<p class="message"><span class="text-muted pull-right">' + chat.message.created + '</span>\n';
@@ -59,7 +55,7 @@ function load_chats() {
                         code += '</li>';
 
                         $('.chats').append(code);
-                    }
+
                 });
             });
         });
@@ -91,11 +87,7 @@ function load_chat(id) {
 
     chat_message.success(function (result) {
 
-        if (result.response.chat.user.primary_role == 'Banned') {
-            $('.chats').html("<div class='alert alert-danger'>Je bent verbannen van Chatzor!</div>");
-            clearInterval(lastshout());
-        }
-        else {
+
             var code = '<li data-name="' + result.response.chat.user.username + '" data-id="' + result.response.chat.message.id + '" class="list-group-item">\n';
             code += '<img style="width:30px;height:30px;margin:-5px 10px;display:inline-block;" class="img-circle avatar-image pull-left hidden-xs" src="./img/uploads/avatars/' + result.response.chat.user.avatar + '">\n'
             code += '<p class="message"><span class="text-muted pull-right">' + result.response.chat.message.created + '</span>\n';
@@ -103,7 +95,7 @@ function load_chat(id) {
             code += '</li>';
 
             $('.chats').prepend(code);
-        }
+        
     });
 }
 
