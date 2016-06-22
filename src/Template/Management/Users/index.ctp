@@ -8,15 +8,16 @@
                 </div>
                 <div class="panel-body">
                     <?= $this->Form->create(null, [
+                        'type' => 'get',
                         'url' => ['controller' => 'Users', 'action' => 'search'],
                         'id' => 'messageform',
                     ]);
                     ?>
                     <div class="col-md-6">
                         <div class="input-group">
-                            <?= $this->Form->input('search', ['maxlength' => 150, 'autocomplete' => 'off', 'class' => 'form-control', 'label' => false, 'placeholder' => __('Search for an user')]); ?>
+                            <?= $this->Form->input('search_string', ['maxlength' => 150, 'autocomplete' => 'off', 'class' => 'form-control', 'label' => false, 'placeholder' => __('Search for an user')]); ?>
                             <span class="input-group-btn">
-                             <?= $this->Form->button(__('Search'), ['class' => 'btn btn-warning']); ?>
+                             <?= $this->Form->button(__('Search'), ['class' => 'btn btn-warning', 'required']); ?>
                          </span>
                         </div>
                     </div>

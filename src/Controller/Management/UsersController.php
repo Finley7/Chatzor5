@@ -80,4 +80,23 @@ class UsersController extends AppController
             }
         }
     }
+
+    public function search() {
+        $searchString = h($this->request->query['search_string']);
+
+        $this->paginate = [
+            'limit' => 25,
+            'contain' => 'PrimaryRole'
+        ];
+
+        if(strlen($searchString) < 1) {
+            $this->Flash->error(__('Search string is empty'));
+            return $this->redirect(['action' => 'index']);
+        }
+
+        $users = $this->Users->findByUsername($searchString);
+
+        $this->set('title', __('Searchresult for {0}', $searchString));
+        $this->set('users', $this->paginate($users));
+    }
 }
