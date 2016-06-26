@@ -105,7 +105,7 @@ class MailkeysController extends AppController
 
                         if($this->Mailkeys->save($mailkey)) {
                             $this->Flash->success(__('The password has been changed'));
-                            return $this->redirect(['action' => 'login']);
+                            return $this->redirect(['controller' => 'users', 'action' => 'login']);
                         }
 
                     } else {

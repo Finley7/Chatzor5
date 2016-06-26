@@ -28,6 +28,7 @@ class ChatsController extends AppController
         if($this->request->isAjax()) {
 
             $this->loadComponent('Ubb');
+            $this->loadModel('Users');
 
             if(!isset($this->request->query['after'])) {
                 $this->request->query['after'] = 0;
@@ -53,7 +54,7 @@ class ChatsController extends AppController
                     ]
                 ])
                 ->order(['Chats.created' => 'DESC'])
-                ->limit(10);
+                ->limit(20);
             
             $chats = [];
             $lastId = 0;
@@ -68,7 +69,7 @@ class ChatsController extends AppController
                 $string = h($chat->message);
                 
                 foreach(Configure::read("Blocked.words") as $key => $value) {
-                    $string = str_ireplace($key, "[{$value}]", $string);
+                    $string = str_ireplace($key, "{$value}", $string);
                 }
                 
                 if(!is_null($chat->whisper_to)) {
