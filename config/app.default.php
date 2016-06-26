@@ -42,7 +42,7 @@ return [
         'defaultLocale' => env('APP_DEFAULT_LOCALE', 'en_US'),
         'base' => false,
         'dir' => 'src',
-        'banRole' => 6,
+        'mailActivation' => true,
         'webroot' => 'webroot',
         'wwwRoot' => WWW_ROOT,
         // 'baseUrl' => env('SCRIPT_NAME'),
@@ -55,6 +55,13 @@ return [
             'templates' => [APP . 'Template' . DS],
             'locales' => [APP . 'Locale' . DS],
         ],
+    ],
+
+    'Roles' => [
+        'banRole' => 6,
+        'userRole' => 1,
+        'adminRole' => 2,
+        'activationRole' => 3
     ],
 
     'Blocked' => [

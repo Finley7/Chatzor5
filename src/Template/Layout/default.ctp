@@ -10,6 +10,11 @@
     </title>
     <?= $this->Html->meta('icon') ?>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+    <?= $this->Html->meta('description', 'Chatzor: gratis chatten met een groep mensen!'); ?>
+    <?= $this->Html->meta('title', 'Chatzor ~ ' . isset($title) ? $title : $this->fetch('title')); ?>
+    <?= $this->Html->meta('keywords', 'chatten, dutch, chat, nederlands, groupchat, im'); ?>
+
     <meta name="author" content="Finley Siebert">
 
     <?= $this->Html->css('bootstrap.min.css') ?>
@@ -20,8 +25,7 @@
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 
-    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-
+    <?= $this->Html->script('jquery-2.1.1.min'); ?>
     <?= $this->Html->script('jquery.timeago'); ?>
     <?= $this->Html->script('bootstrap.min'); ?>
 
