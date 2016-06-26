@@ -34,6 +34,7 @@ $(function () {
         var e = $(this).parents(".msg").data("name");
         $("#message").focus().val("/pvt " + e + " ")
     })
+    
 
 });
 
@@ -95,7 +96,7 @@ function load_chat(id) {
             code += '</li>';
 
             $('.chats').prepend(code);
-        
+
     });
 }
 

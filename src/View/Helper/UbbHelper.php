@@ -15,6 +15,7 @@
 
 namespace App\View\Helper;
 
+use Cake\ORM\TableRegistry;
 use Cake\View\Helper;
 use Cake\Core\Configure;
 use Emojione\Client;
@@ -34,6 +35,7 @@ class UbbHelper extends Helper
         $string = nl2br($string);
 
         $string = self::setUbb($string);
+        $string = self::usernameTags($string);
         $string = ((true) ? self::smilies($string) : $string);
 
         $string = (($emojione) ? self::emo($string) : $string);
@@ -229,6 +231,33 @@ class UbbHelper extends Helper
 
             return '<a href="' . $string . '" target="_blank">' . $string . '</a>';
 
+        }
+
+        return $string;
+
+    }
+
+    public static function usernameTags($string) {
+
+        $userRegistry = TableRegistry::get('Users');
+
+        $userNames = [];
+
+        $usernamePattern = '/@[a-zA-z0-9]+/';
+
+        preg_match_all($usernamePattern, $string, $matches);
+
+        foreach($matches as $match) {
+            $usernames = str_ireplace('@', '', $match);
+
+            foreach($usernames as $username) {
+                $currentUser = $userRegistry->findByUsername($username)->contain(['PrimaryRole'])->first();
+                if(!is_null($currentUser)) {
+                    $userNames[$username] = $currentUser->username .'-';
+                }
+
+                $string = str_ireplace($match, $userNames[$username], $string);
+            }
         }
 
         return $string;

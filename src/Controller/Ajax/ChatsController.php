@@ -59,6 +59,7 @@ class ChatsController extends AppController
             $chats = [];
             $lastId = 0;
             $i = 0;
+            $u = 0;
             
             foreach($chatsFinder->all() as $chat) {
                 $chats[$i]['user']['username'] = h($chat->user->username);

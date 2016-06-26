@@ -4,6 +4,7 @@ namespace App\Controller\Component;
 use Cake\Controller\Component;
 use Cake\Controller\ComponentRegistry;
 use Cake\Core\Configure;
+use Cake\ORM\TableRegistry;
 use Emojione\Client;
 use Emojione\Emojione;
 use Emojione\Ruleset;
@@ -35,6 +36,7 @@ class UbbComponent extends Component
 
         $string = (($emojione) ? self::emo($string) : $string);
         $string = str_replace("bmdiv", "div", $string);
+        $string = self::usernameTags($string);
 
         return $string;
     }
@@ -208,6 +210,33 @@ class UbbComponent extends Component
 
             return '<a href="' . $string . '" target="_blank">' . $string . '</a>';
 
+        }
+
+        return $string;
+
+    }
+
+    public static function usernameTags($string) {
+
+        $userRegistry = TableRegistry::get('Users');
+
+        $userNames = [];
+        $lengthRange = 3 . ',' . 30;
+
+        $usernamePattern = '/(?:^|[^\w])@(?:(("|\'|`)[^\n<>,;&\\\]{' . $lengthRange . '}?\2)|([^\n<>,;&\\\"\'`\.:\-+=~@#$%^*!?()\[\]{}\s]{' . $lengthRange . '}))/u';
+
+        preg_match_all($usernamePattern, $string, $matches);
+
+        foreach($matches as $match) {
+            $usernames = str_ireplace('@', '', $match);
+
+            foreach($usernames as $username) {
+                $currentUser = $userRegistry->findByUsername($username)->contain(['PrimaryRole'])->first();
+                if(!is_null($currentUser)) {
+                    $userNames[$username] = '<span data-id="'. $currentUser->id .'" class="mention role ' . $currentUser->primary_role->name . '">' . $currentUser->username . '</span>';
+                    $string = str_ireplace($username, $userNames[$username], $string);
+                }
+            }
         }
 
         return $string;
