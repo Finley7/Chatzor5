@@ -1,0 +1,6 @@
+{
+  "name": "Chatzor5",
+  "tagline": "Simple AJAX chat application written in CakePHP",
+  "body": "# Chatzor 5 - A simple AJAX chat site.\r\n\r\n[![GitHub release](https://img.shields.io/github/release/finley7/chatzor5.svg?maxAge=2592000)]()\r\n[![GitHub tag](https://img.shields.io/github/tag/finley7/chatzor5.svg?maxAge=2592000)]()\r\n\r\nThe framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).\r\n\r\n## Instalation\r\n1. Download composer from [getcomposer.org](http://getcomposer.org)\r\n2. Go to your project root and type `composer update`\r\n3. Use your database management tool to import the database located at `database/`\r\n4. Rename `app.default.php` to `app.php`\r\n5. Edit the database configuration under the `Datasources` namespace\r\n6. If you have mail-activation enabled, change it also under the `Mailer` namespace.\r\n7. You have succesfully setup Chatzor5\r\n\r\n## Credits\r\nCredits go to the creators of CakePHP for developing this amaaazing framework. And @Finley7 for Chatzor5.\r\n\r\nHave fun!\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
