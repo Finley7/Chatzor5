@@ -5,7 +5,7 @@
 
 The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
 
-## Instalation
+## Installation
 1. Download composer from [getcomposer.org](http://getcomposer.org)
 2. Go to your project root and type `composer update`
 3. Use your database management tool to import the database located at `database/`
